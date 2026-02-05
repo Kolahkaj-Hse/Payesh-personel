@@ -127,15 +127,56 @@
   .row3{grid-template-columns:1fr; }
 }
 
-</style>
 
-<link rel="manifest" href="./manifest.webmanifest">
-<meta name="theme-color" content="#0f172a">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="پایش منطقه ۹">
-<link rel="apple-touch-icon" href="./icon-180.png">
+    /* Mobile-first Entry UX (improved ثبت عملکرد) */
+    details.acc{border:1px solid var(--line); border-radius:14px; margin:10px 0; background:rgba(255,255,255,0.02);}
+    details.acc>summary{list-style:none; cursor:pointer; padding:12px 12px; font-weight:800; display:flex; align-items:center; justify-content:space-between; gap:10px;}
+    details.acc>summary::-webkit-details-marker{display:none;}
+    details.acc .accBadge{font-weight:700; font-size:12px; color:var(--muted); padding:2px 10px; border:1px solid var(--line); border-radius:999px; background:rgba(255,255,255,0.03);}
+    details.acc .accBody{padding:0 12px 12px 12px;}
+    .stickySave{position:sticky; bottom:10px; z-index:20; margin-top:14px; padding:10px; border:1px solid var(--line); border-radius:16px;
+      background:linear-gradient(180deg, rgba(18,25,37,0.88), rgba(18,25,37,0.96)); backdrop-filter: blur(8px); display:flex; gap:10px; align-items:center;}
+    .stickySave .mini{flex:1; font-size:12px; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+    @media (min-width: 880px){ .stickySave{position:static; bottom:auto;} }
 
+  
+    /* Bottom navigation (mobile) */
+    .bottomBar{display:none;}
+    @media (max-width: 880px){
+      nav.no-print{display:none;} /* hide top tab buttons on mobile */
+      body{padding-bottom:86px;}
+      .bottomBar{
+        position:fixed; left:0; right:0; bottom:0;
+        display:flex; gap:6px;
+        padding:10px 10px calc(10px + env(safe-area-inset-bottom));
+        background:linear-gradient(180deg, rgba(10,14,22,0.6), rgba(10,14,22,0.92));
+        border-top:1px solid var(--line);
+        backdrop-filter: blur(10px);
+        z-index:1000;
+      }
+      .bbItem{
+        flex:1; min-width:0;
+        display:flex; flex-direction:column;
+        align-items:center; justify-content:center;
+        gap:4px;
+        padding:8px 6px;
+        border-radius:14px;
+        border:1px solid transparent;
+        background:transparent;
+        color:var(--muted);
+        font-weight:800;
+      }
+      .bbIcon{font-size:18px; line-height:1;}
+      .bbTxt{font-size:11px; line-height:1.1; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+      .bbItem.active{
+        color:var(--text);
+        background:rgba(255,255,255,0.06);
+        border-color:rgba(255,255,255,0.12);
+      }
+      .bbItem:active{transform:scale(0.98);}
+    }
+
+  </style>
 </head>
 <body>
 <div id="errPanel" style="display:none; position:fixed; left:12px; right:12px; top:12px; z-index:99999; background:#3b0f13; color:#fff; padding:12px 14px; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.35); font-family:system-ui, sans-serif;">
@@ -400,15 +441,21 @@
 
         <div class="hr"></div>
 
-        <h2>آموزش‌ها (چند ردیف)</h2>
+        <details class="acc" open>
+  <summary>آموزش‌ها (چند ردیف) <span class="accBadge" id="badgeTrain"></span></summary>
+  <div class="accBody">
+<h2>آموزش‌ها (چند ردیف)</h2>
         <div id="trainings"></div>
         <div class="actions">
           <button class="btn" id="addTrainingBtn">+ افزودن آموزش</button>
         </div>
 
-        <div class="hr"></div>
-
-        <h2>گزارش‌های ماهانه (برای این ماه/چرخه)</h2>
+  </div>
+</details>
+        <details class="acc">
+  <summary>گزارش‌های ماهانه (برای این ماه/چرخه) <span class="accBadge" id="badgeMonthly"></span></summary>
+  <div class="accBody">
+<h2>گزارش‌های ماهانه (برای این ماه/چرخه)</h2>
         <p class="hint">
           این گزینه‌ها ماهانه هستند. ثبت می‌شود که «در همین دوره» توسط چه کسی انجام شده.
         </p>
@@ -470,14 +517,21 @@
           </div>
         </div>
 
-        <div class="hr"></div>
-
-        <h2>مانورها</h2>
+  </div>
+</details>
+        <details class="acc">
+  <summary>مانورها <span class="accBadge" id="badgeDrill"></span></summary>
+  <div class="accBody">
+<h2>مانورها</h2>
         <div id="drills"></div>
         <div class="actions"><button class="btn" id="addDrillBtn">+ افزودن مانور</button></div>
-        <div class="hr"></div>
 
-        <h2>بررسی تجهیزات ایمنی (هر ۱۴ روز)</h2>
+  </div>
+</details>
+        <details class="acc">
+  <summary>بررسی تجهیزات ایمنی (هر ۱۴ روز) <span class="accBadge" id="badgeEquip"></span></summary>
+  <div class="accBody">
+<h2>بررسی تجهیزات ایمنی (هر ۱۴ روز)</h2>
         <div class="row">
           <div class="field">
             <label>انجام شد؟</label>
@@ -494,7 +548,10 @@
         </div>
 
 
-        <h2>پیگیری Action Plan</h2>
+        <details class="acc">
+  <summary>پیگیری Action Plan <span class="accBadge" id="badgeAP"></span></summary>
+  <div class="accBody">
+<h2>پیگیری Action Plan</h2>
         <div class="row">
           <div class="field">
             <label>پیگیری انجام شد؟</label>
@@ -520,16 +577,19 @@
           </div>
         </div>
 
-        <div class="hr"></div>
-
-        <h2>درخواست‌ها (لیستی)</h2>
+  </div>
+</details>
+        <details class="acc">
+  <summary>درخواست‌ها (لیستی) <span class="accBadge" id="badgeReq"></span></summary>
+  <div class="accBody">
+<h2>درخواست‌ها (لیستی)</h2>
         <div id="requests"></div>
         <div class="actions">
           <button class="btn" id="addReqBtn">+ افزودن درخواست</button>
         </div>
 
-        <div class="hr"></div>
-
+  </div>
+</details>
         <h2>نامه‌های پیگیری (لیستی)</h2>
         <div id="letters"></div>
         <div class="actions">
@@ -541,13 +601,22 @@
           <button class="btn" id="loadEntryBtn">بارگذاری عملکرد ذخیره‌شده (اگر قبلاً ثبت شده)</button>
         </div>
 
+<div class="stickySave" id="stickySaveBar">
+  <button class="btn primary" id="saveEntryBtn2" type="button">ذخیره</button>
+  <button class="btn" id="loadEntryBtn2" type="button">بارگذاری</button>
+  <div class="mini" id="entryMiniStatus">—</div>
+</div>
+
+
         <p class="hint" id="dupHint">اگر شماره نامه تکراری باشد، فیلد با کادر زرد مشخص می‌شود (فقط هشدار است، خطا نیست).</p>
       </div>
 
       <div class="card">
         <h2>خلاصه سریع</h2>
         <div id="entrySummary" class="hint">یک دوره را انتخاب کن تا خلاصه نمایش داده شود.</div>
-        <div class="hr"></div>
+
+  </div>
+</details>
         <h2>نکته مهم درباره «ذخیره نشدن/جایگزین نشدن»</h2>
         <p class="hint">
           داده‌ها به‌صورت «دوره‌ای» ذخیره می‌شوند و برای سال‌ها باقی می‌مانند.
@@ -794,7 +863,16 @@
 
   <section id="tabBackup" class="tab" style="display:none;">
     <div class="grid cols2">
-      <div class="card">
+      
+    <div class="card" id="mobileQuickLinks">
+      <h2>دسترسی سریع (موبایل)</h2>
+      <div class="actions">
+        <button class="btn" type="button" onclick="document.querySelector('nav button[data-tab=\'tabRig\']')?.click();">دکل‌ها</button>
+        <button class="btn" type="button" onclick="document.querySelector('nav button[data-tab=\'tabSchedule\']')?.click();">اقماری</button>
+      </div>
+      <div class="hint">در موبایل منوی بالایی مخفی است؛ از اینجا به دکل‌ها و برنامه اقماری برو.</div>
+    </div>
+<div class="card">
         <h2>خروجی گرفتن (Export)</h2>
         <p class="hint">برای اینکه چند سال اطلاعاتت مطمئن بماند، هر از گاهی خروجی JSON بگیر.</p>
         <div class="actions">
@@ -2896,12 +2974,172 @@ try{ refreshSnapshotUI(); }catch(e){}
 
 <script>
 (function(){
-  if(!("serviceWorker" in navigator)) return;
-  window.addEventListener("load", function(){
-    navigator.serviceWorker.register("./sw.js").catch(function(err){
-      console.warn("SW register failed", err);
+  function q(sel){ try { return document.querySelector(sel); } catch(e){ return null; } }
+  function setBadge(id, txt){
+    var el = document.getElementById(id);
+    if(el) el.textContent = txt;
+  }
+  function refreshBadges(){
+    var tWrap = document.getElementById("trainings");
+    var tCount = tWrap ? tWrap.children.length : 0;
+    setBadge("badgeTrain", "(" + (tCount||0) + ")");
+
+    var monthly = [];
+    var map = [
+      ["wasteYes","دفع پسماند"],
+      ["waterYes","آب مصرفی"],
+      ["comYes","کمیته"],
+      ["projYes","پروژه"]
+    ];
+    for(var i=0;i<map.length;i++){
+      var id = map[i][0], label = map[i][1];
+      var el = document.getElementById(id);
+      var v = el ? (el.value||"") : "";
+      if(v==="yes") monthly.push(label+"✓");
+      else if(v==="no") monthly.push(label+"✗");
+    }
+    setBadge("badgeMonthly", monthly.length? monthly.join("، "): "—");
+
+    var dWrap = document.getElementById("drills");
+    var dCount = dWrap ? dWrap.children.length : 0;
+    setBadge("badgeDrill", "(" + (dCount||0) + ")");
+
+    var eqEl = document.getElementById("equipYes");
+    var eq = eqEl ? (eqEl.value||"") : "";
+    setBadge("badgeEquip", eq==="yes"?"✓":eq==="no"?"✗":"—");
+
+    var apEl = document.getElementById("apYes");
+    var ap = apEl ? (apEl.value||"") : "";
+    var opEl = document.getElementById("apOpen");
+    var clEl = document.getElementById("apClose");
+    var op = opEl ? (opEl.value||"") : "";
+    var cl = clEl ? (clEl.value||"") : "";
+    setBadge("badgeAP", ap==="yes" ? ("باز:"+(op||0)+" بسته:"+(cl||0)) : ap==="no" ? "خیر" : "—");
+
+    var rWrap = document.getElementById("requests");
+    var rCount = rWrap ? rWrap.children.length : 0;
+    setBadge("badgeReq", "(" + (rCount||0) + ")");
+
+    var lWrap = document.getElementById("letters");
+    var lCount = lWrap ? lWrap.children.length : 0;
+    setBadge("badgeLet", "(" + (lCount||0) + ")");
+
+    var rigEl = document.getElementById("enRig");
+    var perEl = document.getElementById("enPeriod");
+    var personEl = document.getElementById("enPerson");
+    var mini = document.getElementById("entryMiniStatus");
+    if(mini){
+      var rig = rigEl ? (rigEl.value||"—") : "—";
+      var per = perEl ? (perEl.value||"—") : "—";
+      var person = personEl ? (personEl.value||"—") : "—";
+      mini.textContent = rig + " | " + per + " | " + person;
+    }
+  }
+
+  function wireDup(){
+    var s1 = q("#saveEntryBtn"), s2 = q("#saveEntryBtn2");
+    var l1 = q("#loadEntryBtn"), l2 = q("#loadEntryBtn2");
+    if(s2 && s1) s2.addEventListener("click", function(){ s1.click(); });
+    if(l2 && l1) l2.addEventListener("click", function(){ l1.click(); });
+  }
+
+  document.addEventListener("DOMContentLoaded", function(){
+    wireDup();
+    refreshBadges();
+    document.addEventListener("input", function(e){
+      if(e.target && e.target.closest && e.target.closest("#tabEntry")) refreshBadges();
+    });
+    document.addEventListener("change", function(e){
+      if(e.target && e.target.closest && e.target.closest("#tabEntry")) refreshBadges();
+    });
+    ["addTrainingBtn","addDrillBtn","addRequestBtn","addLetterBtn"].forEach(function(id){
+      var b = document.getElementById(id);
+      if(b) b.addEventListener("click", function(){ setTimeout(refreshBadges, 50); });
+    });
+    ["enRig","enPeriod"].forEach(function(id){
+      var el = document.getElementById(id);
+      if(el) el.addEventListener("change", function(){ setTimeout(refreshBadges, 50); });
     });
   });
+})();
+</script>
+
+
+  <div class="bottomBar no-print" id="bottomBar">
+    <button class="bbItem active" data-tab="tabEntry" aria-label="ثبت">
+      <span class="bbIcon">✍️</span>
+      <span class="bbTxt">ثبت</span>
+    </button>
+    <button class="bbItem" data-tab="tabReport" aria-label="گزارش">
+      <span class="bbIcon">🖨️</span>
+      <span class="bbTxt">گزارش</span>
+    </button>
+    <button class="bbItem" data-tab="tabFollow" aria-label="پیگیری">
+      <span class="bbIcon">📌</span>
+      <span class="bbTxt">پیگیری</span>
+    </button>
+    <button class="bbItem" data-tab="tabLeave" aria-label="مرخصی">
+      <span class="bbIcon">🗓️</span>
+      <span class="bbTxt">مرخصی</span>
+    </button>
+    <button class="bbItem" data-tab="tabInc" aria-label="حوادث">
+      <span class="bbIcon">⚠️</span>
+      <span class="bbTxt">حوادث</span>
+    </button>
+    <button class="bbItem" data-tab="tabBackup" aria-label="تنظیمات">
+      <span class="bbIcon">⚙️</span>
+      <span class="bbTxt">تنظیمات</span>
+    </button>
+  </div>
+
+
+<script>
+(function(){
+  function switchTab(tabId){
+    // Prefer existing nav buttons' logic (keeps all side-effects)
+    var topBtn = document.querySelector('nav button[data-tab="'+tabId+'"]');
+    if(topBtn){ topBtn.click(); }
+    else{
+      // fallback: hide/show .tab
+      document.querySelectorAll(".tab").forEach(function(s){ s.style.display="none"; });
+      var t=document.getElementById(tabId); if(t) t.style.display="";
+    }
+    // sync bottom bar active
+    document.querySelectorAll("#bottomBar .bbItem").forEach(function(b){ b.classList.remove("active"); });
+    var bb=document.querySelector('#bottomBar .bbItem[data-tab="'+tabId+'"]');
+    if(bb) bb.classList.add("active");
+  }
+
+  function initBottomBar(){
+    var bar=document.getElementById("bottomBar");
+    if(!bar) return;
+    bar.querySelectorAll(".bbItem").forEach(function(b){
+      b.addEventListener("click", function(){
+        switchTab(b.getAttribute("data-tab"));
+      });
+    });
+
+    // whenever top nav changes (desktop), update bottom bar too
+    document.querySelectorAll("nav button[data-tab]").forEach(function(b){
+      b.addEventListener("click", function(){
+        var tab=b.getAttribute("data-tab");
+        document.querySelectorAll("#bottomBar .bbItem").forEach(function(x){ x.classList.remove("active"); });
+        var bb=document.querySelector('#bottomBar .bbItem[data-tab="'+tab+'"]');
+        if(bb) bb.classList.add("active");
+      });
+    });
+
+    // ensure current active tab reflected
+    var activeTop=document.querySelector("nav button.active");
+    if(activeTop){
+      var tab=activeTop.getAttribute("data-tab");
+      document.querySelectorAll("#bottomBar .bbItem").forEach(function(x){ x.classList.remove("active"); });
+      var bb=document.querySelector('#bottomBar .bbItem[data-tab="'+tab+'"]');
+      if(bb) bb.classList.add("active");
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", initBottomBar);
 })();
 </script>
 
